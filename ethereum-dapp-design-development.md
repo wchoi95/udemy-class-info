@@ -40,6 +40,20 @@ through making a dapp on the Ethereum network.**
   4. Geth Javascript API (Miner)
   5. Geth Javascript API (Transactions)
   6. Geth Javascript API (Debug)
+5. Web3 Javascript API
+  1. Web3 JS Overview
+  2. Development Enviroment
+  3. Sample DAPP
+  4. Connecting to the Node
+  5. Getting Node Information
+  6. Account List & Balance
+  7. Sending Ethers in a Transaction
+  8. Solidity Code Compilation
+  9. Deploying a Contract
+  10. Invoking Contract Methods
+  11. Ethereum Events and Logs
+  12. Filter, Logs & Watch
+  13. Contract Instance Watch & Get
 
 **Please note that the notes taken below only outline the topics in detail.
 For learning content please watch the videos and only use this as a guideline
@@ -244,7 +258,7 @@ Ethereum Clients, Network & Geth
 
 Geth Javascript Management API
 ==============================
-*Total Time: TBD*
+*Total Time: 40:38*
 -------------------
 
 # Geth Console API - 6:07
@@ -314,3 +328,166 @@ Geth Javascript Management API
     - debug.goTrace(file, seconds)
     - debug.stacks()
     - debug.vmodule(string)
+
+Web3 Javascript API
+==============================
+*Total Time: 2:00:13*
+-------------------
+
+# Web3 JS Overview - 2:49
+  * Overview of web3 API
+    - eth
+    - net
+    - personal
+    - db
+    - ssh
+  * Asynchronous calls
+  * Big numbers
+    - Manage account balances in Wei
+
+# Development Environment - 8:12
+  * Sample Web3 app
+    - Created with HTML/Javascript
+    - Developed against Geth client
+  * Installing NodeJS tools/components
+    - Yeoman
+    - Gulp
+    - Bower
+
+# Sample DAPP - 4:08
+  * Walking through a sample decentralized application
+  * thedapps.com
+  * Running a sample DAPP
+
+# Connecting to the Node - 6:07
+  * Navigating through the sample dapp
+  * how web3 is injected onLoad
+
+# Getting Node Information - 5:37
+  * web3 version object
+    - How to set the web3 version
+  * web3.net
+    - listening / getListening
+    - peerCount / getPeerCount
+  * Syncing
+    - web3.isSyncying(callback)
+    - web3.syncing/getSyncing
+  * Mining
+    - web3.mining/getMining
+
+# Account List & Balance - 7:06
+  * web3.eth.getAccounts(function(error,result) {//callback function} )
+  * web3.eth.coinbase
+    - miner rewards account
+  * web3.eth.defaultAccount
+  * web3.eth.getBalance
+    - balance in wei
+    - web3.fromWei(balance_in_wei, 'ether')
+
+# Sending Ethers in a Transaction - 14:00
+  * Unlocking and Locking API
+    - web3.personal.unlockAccount(account, password, function(error, result) {//callback function})
+    - web3.personal.lockAccount(account, function(error, result) {//function code})
+    - result = true if successful
+    - web3.personal.unlockAccount(account, password, duration)
+    - web3.personal.lockAccount(account)
+  * Send Transaction
+    - web3.eth.sendTransaction(transactionObject, function(error, result) {//callback function})
+    - result = transaction hash
+  * Transaction Object
+    - from (default is web3.eth.defaultAccount)
+    - to
+    - value (in wei)
+    - gas
+    - gas price (in wei)
+    - data (in hex)
+    - nonce
+
+# Solidity Code Compilation - 9:15
+  * Compilation Output
+    - Bytecode / EVM Code
+    - Application Binary Interface
+  * Introduction to SOLC
+  * SOLC Compiler options
+    - solc --bin sample.sol (bytecode)
+    - solc --abi sample.sol (application binary interface)
+    - solc --combined-json abi,bin... sample.sol (comma seperated list of output components)
+    - after this command you can set output with '> ./sol/sample.bin' <-- example
+
+# Deploying a Contract - 11:05
+  * web3.eth.contract(abiDefinition array)  - creates contract object
+    - Deploying the contract
+    - Invoking a contract function
+    - Watch for events from contract instance
+  * Synchronous deployment
+    - var contractInstance = contract.new(constructor_param1, constructor_param2, ..., {transaction object})
+    - transaction object data is set to the bytecode of the contract
+    - contractInstance.transactionHash << transaction created
+    - contractInstance.address >> filled after transaction is mined
+  * Asynchronous
+    - contract.new(constructor_param1, constructor_param2, ..., {transaction object}, callback(error, result) {})
+    - callback function gets called twice in case of success
+      1. result = transaction hash
+      2. result = contract instance address
+  * Deploy using sendTransaction
+    - var conData = contract.new.getData(constructor_param1, constructor_param2, ..., {data: bytecode})
+    - create transaction object with data set to conData
+    - web3.eth.sendTransaction(transactionObject, function(error, result) {//callback function})
+    - result will be transactionHash
+    - web3.eth.getTransactionReceipt(transactionHash, function(error, result) {//callback function})
+    - will return the contract address
+
+# Invoking Contract Methods - 13:42
+  * Contract Instance
+    - var contractInstance = contract.at(address)
+  * Method Invocation
+    - contractInstance.Method.call(...)
+    - contractInstance.Method.sendTransaction(...)
+  * Method.call(...) vs Method.sendTransaction(...)
+
+# Ethereum Events & Logs - 7:13
+  * How events are emitted and how logs are created
+    - All event logs available on all nodes
+    - If watching the dapp gets notified of the event
+  * Event/log uses
+    - Receive data for transaction
+    - Asynchronous trigger
+    - Cheap data storage
+  * Receive Data for transaction
+    - Once mined, the contract sends back the data in an event
+    - The event data has the return value for the method that was invoked
+  * Asynchronous Notifications
+    - Use events to notify a dapp that the contract has been invoked
+  * Data Storage
+    - Events make logs and you can use those logs to store data
+    - Log storage is cheaper than contract storage however logs are not accessible from contracts
+
+# Filter, Logs & Watch - 19:27
+  * Watch listens for incoming events
+  * Get gets the log data
+  * Filter API
+    - var filter = web3.eth.filter(options_object_json)
+      - strings
+        - "latest" - result = block hash of latest block
+        - "pending" - result = transaction hash of latest transaction
+      - for options_object
+        - block range
+        - specific contract instance
+        - event data to filter
+    - filter.watch(callback_func) result = array of events
+    - filter.stopWatching()
+    - filter.get(callback_func) result = event data
+
+# Contract Instance Watch & Get - 11:32
+  * Topics is indexed or topics option
+  * fromBlock toBlock and address is additional options
+  * contractEvent
+    - var contractEvent = contractInstance.allEvent(additionalOptions)
+    - var contractEvent = contractInstance.NumberSetEvent(indexedOptions, additionalOptions)
+  * Event JSON
+    - address
+    - block and transaction info
+    - removed
+    - type of event
+    - args json
+  * Filter get/watch vs Event get/watch
