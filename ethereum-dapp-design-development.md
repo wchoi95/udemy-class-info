@@ -491,3 +491,63 @@ Web3 Javascript API
     - type of event
     - args json
   * Filter get/watch vs Event get/watch
+
+Getting Ready to write Solidity Contracts
+=========================================
+*Total Time: 36:55*
+-------------------
+
+# Tools for Contract Development - 12:15
+  * Downloading an IDE
+    - Enabling Solidity Plugin
+  * Ethereum client and compiled contract
+  * Using Ethereum simulator to testing compiled contracts
+  * How to install testrpc
+  * Introduction to dapp frameworks
+  * Truffle
+  * Mocha
+    - describe(...)
+    - it(...)
+    - before()
+    - beforeEach()
+    - after()
+    - afterEach()
+  * Chai
+    - assert
+    - expect
+    - should
+
+# Setting Up a Truffle Project - 6:58
+  * Initializing Truffle project
+    - Create directory
+    - truffle init
+  * Creating a contract
+    - truffle create contract ContractName
+  * Deploying contract
+    - Add contract to migrations/deploy_contracts.js
+    - Run testrpc
+    - truffle migrate
+
+# Coding and Testing - 7:35
+  * Contract development cycle
+    1. Add test cases
+    2. Code contract
+    3. Compile contract
+    4. Test contract
+    5. Repeat 2-4 until all test cases pass
+  * Coding a calculator contract
+  * Creating a test file
+    - truffle create test ContractName
+    - truffle test pathToTest
+
+# Deploying Contract to Network - 10:07
+  * Proper development deployment order
+    1. testrpc
+    2. testnet
+    3. live
+  * truffle migrate options
+    - --reset
+    - -f number
+    - --network name
+    - --compile-all
+    - --verbose-rpc
