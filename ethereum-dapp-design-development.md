@@ -54,6 +54,11 @@ through making a dapp on the Ethereum network.**
   11. Ethereum Events and Logs
   12. Filter, Logs & Watch
   13. Contract Instance Watch & Get
+6. Getting Ready to Write Solidity Contracts
+  1. Tools for Contract Development
+  2. Setting Up a Truffle Project
+  3. Coding and Testing
+  4. Deploying Contract to Network
 
 **Please note that the notes taken below only outline the topics in detail.
 For learning content please watch the videos and only use this as a guideline
@@ -551,3 +556,293 @@ Getting Ready to write Solidity Contracts
     - --network name
     - --compile-all
     - --verbose-rpc
+
+Ethereum Smart Contract Development with Solidity
+=================================================
+*Total Time: 2:08:00*
+---------------------
+
+# Solidity Contract Layout - 7:18
+  * Code layout
+    - pragma solidity ^0.4.6 (rejected with compiler version 0.5.x)
+    - contact name {
+      state/storage variables
+      events
+      functions
+    }
+  * Source files can contain multiple contracts
+    - Invocation
+    - Inheritance
+    - Creation
+    - Last contract in file gets deployed
+    - Can import contracts
+      - import "./Account.sol";
+
+# Solidity Basic Datatypes - 12:04
+  * Value types are passed by value
+  * boolean
+    - bool varName;
+    - initialized to false
+  * integer
+    - int num1;  // signed
+    - uint num2; // unsigned
+    - initialized to 0
+    - size specified in 8 bit increments
+      - eg. int8, int16, uint32
+    - default size is 256
+  * Implicit type conversions
+    - Compiler allows if no loss of information
+      - eg. uint16 -> uint8
+  * Explicit type conversions
+    - Potential loss of information
+      - uint32 x32 = 20;
+      - uint24 x24 = uint23(x32);
+  * Deduction type conversion
+    - Compiler automatically infers type
+      - var someVar = x32;
+    - useful for receiving multiple values from functions
+  * Address value type
+    - represents the 20 bye Ethereum address
+    - address.balance (in wei)
+    - address.transfer(num)
+  * Variable Initialization
+    - No special keyword to check for uninitialized variable
+    - depending on datatype, check for 0 values
+      - eg. flag = (owner == address(0x0));
+      - flag = (dynamicArray.length == 0);
+
+# Memory Management - 8:41
+  * Data Location
+    - Storage
+      - State variables
+      - Local variables
+    - Memory
+      - Functions
+      - Arrays
+        - uint[] memory memoryArray;
+      - Structs
+    - Call data
+      - Temporary
+      - Managing function calls
+      - Is a stack
+
+# Arrays - 6:08
+  * Static arrays
+    - Fixed size arrays
+    - Missing Elements not declared with be initialized to 0
+  * Dynamic arrays
+    - Size can be changed at runtime
+    - dynamic storage arrays can have its size changed (eg. array.length = 6;)
+  * Storage arrays
+    - uint8[3] arr = [1,2,3]
+    - int8[3] arr = [1,2,3] // compilation fails, interpreted as uint8
+    - int8[] arr = [int8(1),2,3] // compiles
+    - array.push(5); // appends to the array
+
+# Special Arrays - 12:41
+  * byte type
+    - byte[15] data; // static
+    - byte[] data; // dynamic
+    - bytes[1-32] data;
+    - bytes data; // dynamic
+    - bytes32 data; // 32 byte
+    - fixed size bytes array is read only
+  * byte[] data
+    - data = new byte[](4);
+    - data = [byte(1),2,3,4];
+    - can read/write
+    - data.length = 10;
+  * bytes data
+    - data = new bytes(4);
+    - data = [byte(1),2,3,4]; // compilation error
+    - can read/write
+    - data.length = 10;
+  * Strings
+    - Dynamically sized
+    - similar to bytes array
+    - string data = string(bytes_array); // is valid
+    - bytes data = bytes(string_data); // is valid
+    - hex literals prefixed with hex (eg. hex"001122")
+    - Supports escape character
+    - Index access is not allowed
+    - No string function out of the box but can use external StringUtil libraries
+    - Complex string operations may be costly. Can use bytes
+
+# Introduction to Functions - 9:54
+  * Return
+    - Use keyword returns(...)
+    - Multiple return parameters
+    - You may name the return parameters
+  * Input parameters
+    - Declare the arguments with type/name
+    - may omit argument name if unused
+  * Redeclaration of a variable in a function is not allowed
+  * Variables initialized to defaults in the beginning of the function
+  * When a function receives multiple values from another function's return, the function gets it as a tuple
+  * Tuple
+    - List of objects
+      - eg. var(name, age) = getOwnerInfo();
+    - You may skip a variable in tuple
+      - eg. var(name, ) = getOwnerInfo();
+  * Function overloading
+    - Functions with same name but different input parameters
+  * Constructor
+    - Constructor function name = name of the contract
+    - Only one constructor is allowed
+    - deploy eg. (deployer.deploy(Funcs, "Nelson", 31)); // where Funcs(string name, uint8 age) {}
+
+# Conversions, Globals & Throw - 12:46
+  * Ether units
+    - wei (default)
+    - ether
+    - finney
+    - szabo
+  * Time
+    - now - global variable returns block time in seconds (from 1970)
+    - conversion by suffixing literal with the time units
+      - seconds (default)
+      - minutes
+      - hours
+      - days
+      - weeks
+      - years
+  * Block
+    - block.number - current block number
+    - block.number - address of current blocks miner
+    - block.timestamp - block time (same as now)
+    - block.difficulty - current blocks difficulty
+    - block.gaslimit - gas limit
+    - block.blockhash(uint blkNum) returns(bytes 32)
+      - hashes of most recent 256 blocks (excluding current)
+  * Msg
+    - msg.data - call data in bytes
+    - msg.sender - caller's address
+    - msg.sig - function identifier (first 4 bytes of call data)
+    - msg.value - # of wei sent in the message, only available in payable function
+  * tx
+    - tx.gasprice - gas price for the transaction
+    - tx.origin - address that originated the transaction (shouldn't use)
+  * throw;
+    - aborts the transaction execution
+    - all state changes are reverted
+    - no ethers are sent out
+    - ethers received in transaction is returned
+    - gas is spent (i.e there is a cost)
+    - transaction is recorded on the chain; nonce is valid and recorded
+    - no catch (as in try/catch)
+  * assert(condition)
+    - throws if condition is not met
+  * Cryptography hash functions
+    - deterministic
+    - quick
+    - infeasible
+    - any change will change the hash
+    - collision resistant
+  * Crypto functions
+    - takes multiple bytes parameters and produces bytes32
+      - keccak256(...)
+      - sha3(...)
+      - sha256(...)
+    - takes multiple bytes parameters and produces bytes20
+      - ripemd160(...)
+
+# Complex datatypes - 15:51
+  * Mapping type
+    - Hashtable like structure
+    - Allowed only as storage or state variable
+    - mapping(address -> uint) balances;
+    - key can be any type except mapping
+    - value type can be mapping
+    - value exists for all keys (default given to uninitialized)
+    - keccak256(Key data) hash is stored
+    - by default is not iterable
+    - No concept of length (can do it by a separate counter)
+  * Enums
+    - Create custom types with finite set of values
+      - eg. enum TransferType {Domestic, Foreign} // no semicolon
+    - not part of the ABI definition
+    - explicit conversion to/from all integer types
+  * Struct
+    - Cannot have a member of its own type
+    - Can be contained in arrays and mappings
+    - not part of the ABI definition
+    - external function calls cannot send/receive struct types
+    - internal function calls can send/receive struct types
+      - eg. function someFunc(country ctry) internal {}
+    - Default for struct type local variable is Storage type
+
+# Object Orientation - 8:11
+  * Solidity supports
+    - function overloading
+    - inheritance
+      - abstract Contracts
+      - supports multiple inheritance
+    - polymorphism
+  * Abstract contract
+    - no keyword for abstract contracts
+    - functions declared but no body provided
+    - inheritance relation created using the keyword 'is'
+      - eg. contract ObjectOrientation is AbstractContract, UtilContract {}
+    - Derived contract constructor need to provide the arguments for all the base contracts
+      - eg. function AbstractContract(string name) {}
+            function ObjectOrientation(string agentName, uint8 rate) AbstractContract(agentName) {}
+
+# Function and Variable Visibility - 13:32
+  * Visibility Overview
+    - public
+      - part of contract interface
+      - automatic getter for state variable
+      - public function calls are internal and external
+    - private
+      - available only within the contract only
+      - not even available in a derived contract
+    - internal
+      - can invoke function internally in contract
+    - external
+      - can be invoked by other contracts as long as they have the address and function information
+      - can be invoked internally using 'this.'
+  * Functions can be created as types
+    - eg. function(string memory) internal returns(uint) lengthFunctionVar;
+
+# Constants & Receiving Ethers - 9:25
+  * Constant variable must be initialized at compile time
+    - Cannot be initialized in the constructor
+    - Structs cannot be declared constant
+    - Constant functions promises not to change state
+      - not enforced by a compiler
+  * Fallback function
+    - an un-named function in the contract
+    - invoked without the data i.e., the function signature
+    - restrictions:
+      - no arguments
+      - cannot return anything
+      - maximum gas spend = 2300 gas
+  * Receiving ethers
+    - contract can receive ethers by way of payable fallback function
+    - Invoked when ethers are received (msg.value) without data
+    - Exceeding the gas in fallback function will
+      - throw exception
+      - send back the ethers
+      - best practice is to log an event in the fallback function
+    - a function must be marked payable to received ethers
+      - ethers are held in the contract not the function
+
+# Function Modifiers 5:34
+  * Modifiers changes the behavior of a function
+  * Can make modifiers
+    - A throw in modifier halts the execution
+    - A return in modifier returns from modifier body
+    - Modifiers can take arguments
+      - passed from the argument of the function
+    - Local variables from within modifiers not available in functions
+    - Multiple modifiers may be applied to functions
+    - The order that modifiers are executed is left to right
+    - May be inherited and may be overridden by child contract
+
+# Events - 5:55
+  * Declaration of event looks like a function without a body
+    - eg. event NewHighBid(address indexed who, string, name, uint howmuch);
+  * Events are invoked in functions, like functions
+    - eg. func {
+      NewHighBid.(msg.sender, name, msg.value);
+    }
