@@ -59,6 +59,20 @@ through making a dapp on the Ethereum network.**
   2. Setting Up a Truffle Project
   3. Coding and Testing
   4. Deploying Contract to Network
+7. Ethereum Smart Contract Development With Solidity
+  1. Solidity Contract Layout
+  2. Solidity Basic Datatypes
+  3. Memory Management
+  4. Arrays
+  5. Special Arrays
+  6. Introduction to Functions
+  7. Conversions, Globals & THrows
+  8. Complex datatypes
+  9. Object Orientation
+  10. Function and Variable Visibility
+  11. Constants & Receiving Ethers
+  12. Function Modifiers
+  13. Events 
 
 **Please note that the notes taken below only outline the topics in detail.
 For learning content please watch the videos and only use this as a guideline
