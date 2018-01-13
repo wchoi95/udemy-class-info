@@ -11,12 +11,12 @@ developers. It will get them familiar with the Geth environment and guide them
 through making a dapp on the Ethereum network.**
 
 ## Index
-1. Blockchain Foundational Concepts
+1. Blockchain Foundational Concepts - 31:35
   1. Introduction
   2. Blockchain Foundational Concepts
   3. Blockchain 101
   4. Ethereum 101
-2. Ethereum Blockchain - Using the wallet for interacting with the network
+2. Ethereum Blockchain - Using the wallet for interacting with the network - 1:28:29
   1. Ethereum Decentralized Applications
   2. Ethers, Gas, EVM
   3. Ethereum Networks
@@ -26,21 +26,21 @@ through making a dapp on the Ethereum network.**
   7. Managing Contracts in a Wallet
   8. Meta Mask
   9. Developing Contracts using Remix
-3. Ethereum Clients, Network and Geth
+3. Ethereum Clients, Network and Geth - 49:27
   1. Ethereum Client or Node
   2. GoLang Ethereum Client
   3. Setting up the client testnet
   4. Setting up RPC for the geth client
   5. Working with console options and commands
   6. Account and Mining
-4. Geth Javascript Management API
+4. Geth Javascript Management API - 40:38
   1. Geth Console API
   2. Geth Javascript API (Admin)
   3. Geth Javascript API (Personal)
   4. Geth Javascript API (Miner)
   5. Geth Javascript API (Transactions)
   6. Geth Javascript API (Debug)
-5. Web3 Javascript API
+5. Web3 Javascript API - 2:00:13
   1. Web3 JS Overview
   2. Development Enviroment
   3. Sample DAPP
@@ -54,12 +54,12 @@ through making a dapp on the Ethereum network.**
   11. Ethereum Events and Logs
   12. Filter, Logs & Watch
   13. Contract Instance Watch & Get
-6. Getting Ready to Write Solidity Contracts
+6. Getting Ready to Write Solidity Contracts - 36:55
   1. Tools for Contract Development
   2. Setting Up a Truffle Project
   3. Coding and Testing
   4. Deploying Contract to Network
-7. Ethereum Smart Contract Development With Solidity
+7. Ethereum Smart Contract Development With Solidity - 2:08:00
   1. Solidity Contract Layout
   2. Solidity Basic Datatypes
   3. Memory Management
@@ -73,10 +73,10 @@ through making a dapp on the Ethereum network.**
   11. Constants & Receiving Ethers
   12. Function Modifiers
   13. Events
-8. Contract Design Patterns
+8. Contract Design Patterns - 26:48
   1. Self Destruction Pattern
   2. Contract Factory Pattern
-  3. Name Registry Pattern 
+  3. Name Registry Pattern
 
 **Please note that the notes taken below only outline the topics in detail.
 For learning content please watch the videos and only use this as a guideline
@@ -120,6 +120,7 @@ Blockchain Foundational Concepts
 
 Ethereum Blockchain - Using the wallet for interacting with the network
 =======================================================================
+*Total Time: 1:28:29*
 ---------------------
 
 # Ethereum Decentralized Applications - 6:38
