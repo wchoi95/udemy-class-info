@@ -72,7 +72,11 @@ through making a dapp on the Ethereum network.**
   10. Function and Variable Visibility
   11. Constants & Receiving Ethers
   12. Function Modifiers
-  13. Events 
+  13. Events
+8. Contract Design Patterns
+  1. Self Destruction Pattern
+  2. Contract Factory Pattern
+  3. Name Registry Pattern 
 
 **Please note that the notes taken below only outline the topics in detail.
 For learning content please watch the videos and only use this as a guideline
@@ -860,3 +864,50 @@ Ethereum Smart Contract Development with Solidity
     - eg. func {
       NewHighBid.(msg.sender, name, msg.value);
     }
+
+Contract Design Patterns
+========================
+*Total Time: 26:48*
+---------------------
+
+# Self Destruction Pattern - 6:39
+  * Contract Lifecycle
+    0. Develop Contract
+    1. Deployed
+    2. Invoked
+    3. Self-Destruct
+      - No more transactions possible for the contract
+  * Uses for self-destruct
+    - Timed contracts
+      - eg. bidding
+    - Nature of business
+      - eg. loans
+  * function killContract() OwnerOnly { // restrict who can sd
+    suicide(owner); // funds held in contract sent to address
+  }
+  * Funds sent to a self destructed contract will be lost and transaction will fail
+    - to prevent fund loss, remove all references to dead contracts or call get before send to ensure contract is not dead
+
+# Contract Factory Pattern - 13:08
+  * Factory pattern
+    - Dapp doesn't create the contract directly
+    - Creates a factory contract that creates contract instances
+    - External persistent storage is not needed
+    - CON: Storage on EVM will cost gas
+  * Benefits of factory pattern
+    - Hides the complexity & encapsulates business rules
+    - May manage the contracts in a collection
+    - Insulates the dapp from contract changes & additions
+
+# Name Registry Pattern - 7:01
+  * Contract References
+    - Complex apps may have dependency on multiple contracts
+    - The contracts may need to change/switched over time
+  * Name Registry Pattern
+    - Independent registry contract is added
+    - Manages mapping to different contracts (name to address)
+    - Pass name to get address and invoke contract
+  * Benefits of name registry pattern
+    - Simpler dependency management
+    - Newer versions of dependency will not impact the dapp
+      - Registry must be updated with newer versions
